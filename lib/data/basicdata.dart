@@ -34,6 +34,8 @@ class BasicData {
   static String createbulkdailytasksreports =
       "api/dailytasksreports/createbulkdailytasksreports/";
 
+  static String createemailelement = "api/dailytasks/createemailelement/";
+
   static String telegram = "api/reminds/remindfromtogather/";
   static String createremind = "api/reminds/createremind/";
   static String createbulkreminds = "api/reminds/createbulkreminds/";

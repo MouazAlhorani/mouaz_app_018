@@ -8,6 +8,8 @@ import 'package:mouaz_app_018/views/dailytasks.dart';
 import 'package:mouaz_app_018/views/dailytasks_edit.dart';
 import 'package:mouaz_app_018/views/dailytasksreport.dart';
 import 'package:mouaz_app_018/views/dailytasksreport_edit.dart';
+import 'package:mouaz_app_018/views/emails.dart';
+import 'package:mouaz_app_018/views/emails_edit.dart';
 import 'package:mouaz_app_018/views/groups.dart';
 import 'package:mouaz_app_018/views/groups_edit.dart';
 import 'package:mouaz_app_018/views/help.dart';
@@ -113,6 +115,20 @@ class RebuildListMapNotifier extends StateNotifier<List> {
     ];
   }
 
+  chooseinside({index, name, subindex, x}) {
+    state = [
+      ...state.sublist(0, index),
+      state[index] = {
+        name: [
+          ...state[index][name].sublist(0, subindex),
+          {...state[index][name][subindex], 'choose': x ? true : false},
+          ...state[index][name].sublist(subindex + 1)
+        ]
+      },
+      ...state.sublist(index + 1)
+    ];
+  }
+
   movetoselected({index, label, itelmist, clname}) {
     for (var i in itelmist) {
       if (!state[index][label].contains("${i['id']}")) {
@@ -178,15 +194,28 @@ class RebuildListMapNotifier extends StateNotifier<List> {
     state = [...state.skip(index)];
   }
 
+  settime({index, label, ctx}) async {
+    TimeOfDay? time =
+        await showTimePicker(context: ctx, initialTime: TimeOfDay.now());
+    if (time != null) {
+      state = [
+        ...state.sublist(0, index),
+        {...state[index], label: time},
+        ...state.sublist(index + 1)
+      ];
+    }
+  }
+
   setdate({index, label, ctx}) async {
     DateTime? date = await showDatePicker(
         context: ctx,
+        initialDate: state[index][label] ?? DateTime.now(),
         firstDate: DateTime.parse("2024-01-01"),
         lastDate: DateTime.parse("2025-01-01"));
     if (date != null) {
       state = [
         ...state.sublist(0, index),
-        state[index] = {'expiredate': date},
+        {...state[index], label: date},
         ...state.sublist(index + 1)
       ];
     }
@@ -232,6 +261,13 @@ var notifierRemindgroupsEdit =
 var notifiermainitemsHomepage =
     StateNotifierProvider<RebuildListMapNotifier, List>(
         (ref) => RebuildListMapNotifier(custom: HomePage.mainitems));
+
+var notifierEmailsEdit = StateNotifierProvider<RebuildListMapNotifier, List>(
+    (ref) => RebuildListMapNotifier(custom: EmailsE.localdata));
+
+var notifierEmailgroupsEdit =
+    StateNotifierProvider<RebuildListMapNotifier, List>(
+        (ref) => RebuildListMapNotifier(custom: EmailsE.groupslist));
 
 // RebuildMainApp__
 class RebuildLocalDataNotifier extends StateNotifier<List> {
@@ -349,6 +385,8 @@ class RebuildLocalDataNotifier extends StateNotifier<List> {
 var notifierAccountsdata =
     StateNotifierProvider<RebuildLocalDataNotifier, List>(
         (ref) => RebuildLocalDataNotifier(custom: Accounts.localdata));
+var notifierEmailsdata = StateNotifierProvider<RebuildLocalDataNotifier, List>(
+    (ref) => RebuildLocalDataNotifier(custom: Emails.localdata));
 var notifierGroupsdata = StateNotifierProvider<RebuildLocalDataNotifier, List>(
     (ref) => RebuildLocalDataNotifier(custom: Groups.localdata));
 var notifierHelpdata = StateNotifierProvider<RebuildLocalDataNotifier, List>(

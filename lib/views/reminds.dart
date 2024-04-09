@@ -130,7 +130,8 @@ class RemindM extends ConsumerWidget {
               label: "إضافة تذكير جديد",
               function: () =>
                   Navigator.push(context, MaterialPageRoute(builder: (_) {
-                for (var i in RemindsE.localdata.sublist(0, 4)) {
+                for (var i in RemindsE.localdata
+                    .where((element) => element['type'] == 'tf')) {
                   i['controller'].text = '';
                   i['hint'] = '';
                 }
@@ -386,9 +387,11 @@ class RemindM extends ConsumerWidget {
                                         textAlign: TextAlign.center,
                                       ),
                                       Text(
-                                     e['expiredate']!=null?   df.DateFormat("yyyy-MM-dd HH:mm")
-                                            .format(DateTime.parse(
-                                                e['expiredate'])):"غير محدد",
+                                        e['expiredate'] != null
+                                            ? df.DateFormat("yyyy-MM-dd HH:mm")
+                                                .format(DateTime.parse(
+                                                    e['expiredate']))
+                                            : "غير محدد",
                                         textDirection: TextDirection.ltr,
                                       ),
                                       Visibility(

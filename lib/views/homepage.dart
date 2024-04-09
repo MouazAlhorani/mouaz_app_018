@@ -7,6 +7,7 @@ import 'package:mouaz_app_018/data/basicdata.dart';
 import 'package:mouaz_app_018/views/accounts.dart';
 import 'package:mouaz_app_018/views/accounts_edit.dart';
 import 'package:mouaz_app_018/views/dailytasksreport.dart';
+import 'package:mouaz_app_018/views/emails.dart';
 import 'package:mouaz_app_018/views/groups.dart';
 import 'package:mouaz_app_018/views/help.dart';
 import 'package:mouaz_app_018/views/reminds.dart';
@@ -75,7 +76,18 @@ class HomePage extends ConsumerWidget {
         'index': 3,
         'page': const Reminds(),
         'herotag': 'reminds_herotag'
-      }
+      },
+      {
+        'choose': false,
+        'label': 'تفقد الايميلات',
+        'discript': 'تفقد وصول الايميلات اليومية والاخطاء',
+        'icon': Icons.email_outlined,
+        'size': 80.0,
+        'permit': true,
+        'index': 4,
+        'page': const Emails(),
+        'herotag': 'emails_herotag'
+      },
     ];
     mysettings = [
       {

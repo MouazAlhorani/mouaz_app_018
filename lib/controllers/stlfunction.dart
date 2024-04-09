@@ -10,6 +10,7 @@ import 'package:mouaz_app_018/tamplates/dialog01.dart';
 import 'package:mouaz_app_018/views/accounts_edit.dart';
 import 'package:mouaz_app_018/views/dailytasks_edit.dart';
 import 'package:mouaz_app_018/views/dailytasksreport_edit.dart';
+import 'package:mouaz_app_018/views/emails_edit.dart';
 import 'package:mouaz_app_018/views/groups_edit.dart';
 import 'package:mouaz_app_018/views/help_edit.dart';
 import 'package:mouaz_app_018/views/homepage.dart';
@@ -647,6 +648,44 @@ class StlFunction {
           'newtask': DailyTasksE.localdata[0]['controller'].text,
           'newtaskhelp':
               DailyTasksE.localdata[1]['selected'].toString().split(' ')[1],
+        });
+    if (result != null) {
+      if (result['result'] == 'done') {
+        snackbar(color: Colors.green, msg: "تمت العملية بنجاح", ctx: ctx);
+        for (var i in notifierlist) {
+          ref.read(i['notifier'].notifier).rebuild(i['model'], ctx);
+        }
+        Navigator.pop(ctx);
+      }
+    }
+  }
+
+  static createEditEmailelement(
+      {ctx, required WidgetRef ref, e, required List<Map> notifierlist}) async {
+    String days = '';
+    for (var i in EmailsE.localdata[2]['weekdays']) {
+      if (i['choose'] == true) {
+        days += '${i['day']}-';
+      }
+    }
+    EmailsE.localdata[2]['weekdays'].last['day'].text.isNotEmpty
+        ? days +=
+            "customday:${EmailsE.localdata[2]['weekdays'].last['day'].text}"
+        : null;
+    var result = await requestPost(
+        ctx: ctx,
+        url: "${BasicData.baseurl}${BasicData.createemailelement}",
+        body: {
+          'id': e != null ? "${e['id']}" : '',
+          'username': BasicData.userinfo![0]['username'],
+          'password': BasicData.userinfo![0]['password'],
+          'name': EmailsE.localdata[0]['controller'].text,
+          'error_def': EmailsE.localdata[1]['controller'].text,
+          'error_except': EmailsE.localdata[2]['controller'].text,
+          'days': days,
+          'time':
+              "${EmailsE.localdata[4]['selected'].hour}:${EmailsE.localdata[4]['selected'].minute}",
+          'groups': EmailsE.localdata[5]['emailgroups'].toString()
         });
     if (result != null) {
       if (result['result'] == 'done') {

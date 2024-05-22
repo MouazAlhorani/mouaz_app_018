@@ -9,6 +9,7 @@ import 'package:mouaz_app_018/tamplates/onchoosebard.dart';
 import 'package:mouaz_app_018/tamplates/searchM.dart';
 import 'package:mouaz_app_018/views/accounts_edit.dart';
 import 'package:mouaz_app_018/views/groups_edit.dart';
+import 'package:intl/intl.dart' as df;
 
 class Accounts extends StatelessWidget {
   const Accounts({super.key});
@@ -221,66 +222,72 @@ class MmM extends ConsumerWidget {
   }
 
   maincolumnsrow({maincolumns, ref, refnotifier}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ...maincolumns.map((e) => Container(
-              decoration: const BoxDecoration(
-                  color: Colors.amber,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 0.6,
-                        offset: Offset(-2, 3))
+    return Padding(
+      padding: const EdgeInsets.only(right: 75),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ...maincolumns.map((e) => Container(
+                decoration: const BoxDecoration(
+                    color: Colors.amber,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 0.6,
+                          offset: Offset(-2, 3))
+                    ],
+                    borderRadius:
+                        BorderRadius.only(bottomLeft: Radius.circular(5)),
+                    border: Border(bottom: BorderSide(), left: BorderSide())),
+                width: e['width'],
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          ref
+                              .read(refnotifier.notifier)
+                              .sort(sortby: e['sortby']);
+                        },
+                        icon: const Icon(Icons.sort_by_alpha_rounded)),
+                    Text(e['label']),
                   ],
-                  borderRadius:
-                      BorderRadius.only(bottomLeft: Radius.circular(5)),
-                  border: Border(bottom: BorderSide(), left: BorderSide())),
-              width: e['width'],
-              child: Row(
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        ref
-                            .read(refnotifier.notifier)
-                            .sort(sortby: e['sortby']);
-                      },
-                      icon: const Icon(Icons.sort_by_alpha_rounded)),
-                  Text(e['label']),
+                ),
+              )),
+          Container(
+            decoration: const BoxDecoration(
+                color: Colors.amber,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 0.6,
+                      offset: Offset(-2, 3))
                 ],
-              ),
-            )),
-        Container(
-          decoration: const BoxDecoration(
-              color: Colors.amber,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey, blurRadius: 0.6, offset: Offset(-2, 3))
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5)),
+                border: Border(bottom: BorderSide(), left: BorderSide())),
+            width: 150,
+            child: Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      ref.read(refnotifier.notifier).sort(sortby: 'groups');
+                    },
+                    icon: const Icon(Icons.sort_by_alpha_rounded)),
+                const Text("المجموعات"),
               ],
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5)),
-              border: Border(bottom: BorderSide(), left: BorderSide())),
-          width: 150,
-          child: Row(
-            children: [
-              IconButton(
-                  onPressed: () {
-                    ref.read(refnotifier.notifier).sort(sortby: 'groups');
-                  },
-                  icon: const Icon(Icons.sort_by_alpha_rounded)),
-              const Text("المجموعات"),
-            ],
-          ),
-        )
-      ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
   datacolumns({maincolumns, ref, refnotifier, required ctx}) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(right: 75),
       child: Column(children: [
-        ...Accounts.localdata.where((element) => element['search']).map((e) =>
-            Padding(
+        ...Accounts.localdata
+            .where((element) => element['search'])
+            .map((e) => Padding(
                 padding: const EdgeInsets.only(top: 3, bottom: 3),
                 child: GestureDetector(
                     onLongPress: () {
@@ -323,37 +330,53 @@ class MmM extends ConsumerWidget {
                                   e['choose']
                                       ? Colors.redAccent
                                       : e['enable']
-                                          ? Colors.greenAccent
+                                          ? Colors.transparent
                                           : Colors.grey,
                                   Colors.transparent
                                 ]),
                                 border: const Border(bottom: BorderSide())),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Hero(
-                                      tag: "${e['id']}",
-                                      child: const Icon(
-                                        Icons.person,
-                                        color: Colors.blueGrey,
-                                      )),
-                                  ...maincolumns
-                                      .sublist(0, 1)
-                                      .map((m) => SizedBox(
-                                            width: m['width'],
-                                            child: Text("# ${e[m['sortby']]}"),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Hero(
+                                          tag: "${e['id']}",
+                                          child: const Icon(
+                                            Icons.person,
+                                            color: Colors.blueGrey,
                                           )),
-                                  ...maincolumns.sublist(1).map((m) => SizedBox(
-                                        width: m['width'],
-                                        child: Text(
-                                            e[m['sortby']].runtimeType == bool
-                                                ? e[m['sortby']]
-                                                    ? "فعال"
-                                                    : "معطل"
-                                                : "${e[m['sortby']]}"),
-                                      )),
-                                  groups(e: e, ctx: ctx)
-                                ]))))))
+                                      ...maincolumns
+                                          .sublist(0, 1)
+                                          .map((m) => SizedBox(
+                                                width: m['width'],
+                                                child:
+                                                    Text("# ${e[m['sortby']]}"),
+                                              )),
+                                      ...maincolumns
+                                          .sublist(1)
+                                          .map((m) => SizedBox(
+                                                width: m['width'],
+                                                child: Text(e[m['sortby']]
+                                                            .runtimeType ==
+                                                        bool
+                                                    ? e[m['sortby']]
+                                                        ? "فعال"
+                                                        : "معطل"
+                                                    : "${e[m['sortby']]}"),
+                                              )),
+                                      groups(e: e, ctx: ctx)
+                                    ]),
+                                Text(e['ip'] == null
+                                    ? ''
+                                    : "the ip is: ${e['ip'].toString()}"),
+                                Text(e['lastlogin'] == null
+                                    ? ""
+                                    : "last login from ${-1 * DateTime.parse(e['lastlogin']).difference(DateTime.now()).inDays} day/days in ${df.DateFormat("yyyy-MM-dd HH:mm").format(DateTime.parse(e['lastlogin']))}")
+                              ],
+                            ))))))
       ]),
     );
   }

@@ -11,6 +11,7 @@ import 'package:mouaz_app_018/views/emails.dart';
 import 'package:mouaz_app_018/views/groups.dart';
 import 'package:mouaz_app_018/views/help.dart';
 import 'package:mouaz_app_018/views/reminds.dart';
+import 'package:mouaz_app_018/views/tables.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -79,12 +80,23 @@ class HomePage extends ConsumerWidget {
       },
       {
         'choose': false,
+        'label': 'جداول',
+        'discript': 'توثيق معلومات او بيانات بنمط جداول',
+        'icon': Icons.pivot_table_chart_sharp,
+        'size': 80.0,
+        'permit': true,
+        'index': 4,
+        'page': const Tables(),
+        'herotag': 'tables_herotag'
+      },
+      {
+        'choose': false,
         'label': 'تفقد الايميلات',
         'discript': 'تفقد وصول الايميلات اليومية والاخطاء',
         'icon': Icons.email_outlined,
         'size': 80.0,
-        'permit': true,
-        'index': 4,
+        'permit': false,
+        'index': 5,
         'page': const Emails(),
         'herotag': 'emails_herotag'
       },

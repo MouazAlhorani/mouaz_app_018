@@ -1,5 +1,10 @@
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mouaz_app_018/controllers/provider_mz.dart';
 import 'package:mouaz_app_018/controllers/tween_mz.dart';
 
@@ -20,254 +25,169 @@ class LoGoMz extends ConsumerWidget {
         alignment: Alignment.centerLeft,
         child: Padding(
           padding: const EdgeInsets.all(3.0),
-          child: logo
-              ? Text(
-                  "by : معاذ الحوراني",
-                  textDirection: TextDirection.ltr,
-                )
-              : Stack(
-                  children: [
-                    TweenM(
-                      begin: 0.0,
-                      end: 1.0,
-                      durationinmilli: 600,
-                      type: 'scalex',
+          child: Stack(
+            children: [
+              Container(
+                width: 400,
+                height: 75,
+                decoration: const BoxDecoration(
+                    borderRadius:
+                        BorderRadius.only(topRight: Radius.circular(20)),
+                    gradient: LinearGradient(colors: [
+                      Colors.deepPurpleAccent,
+                      Colors.deepPurpleAccent,
+                      Colors.deepPurpleAccent,
+                      Colors.black,
+                      Colors.transparent,
+                    ])),
+              ),
+              Positioned(top: 25, left: 20, child: mainitem()),
+              Positioned(
+                  top: 25,
+                  left: 20,
+                  child: TweenM(
+                      type: 'translatex',
+                      begin: logo ? 35 : 20,
+                      end: 10.0,
+                      durationinmilli: 400,
                       child: TweenM(
-                          alignment: Alignment.bottomCenter,
+                          type: 'scalex',
                           begin: 0.0,
-                          end: 1.0,
-                          durationinmilli: 600,
+                          end: -1.0,
+                          durationinmilli: 400,
+                          child: mainitem()))),
+              Positioned(
+                  top: 25,
+                  left: 20,
+                  child: TweenM(
+                      type: 'translatex',
+                      begin: 0.0,
+                      end: logo ? 0.0 : 40.0,
+                      durationinmilli: 400,
+                      child: TweenM(
+                        type: 'scalex',
+                        begin: 0.0,
+                        end: logo ? 0.0 : 0.6,
+                        durationinmilli: 400,
+                        child: TweenM(
+                            type: 'rotate',
+                            begin: 0.0,
+                            end: logo ? 0.0 : 90.0,
+                            durationinmilli: 400,
+                            child: mainitem()),
+                      ))),
+              Positioned(
+                  top: 25,
+                  left: 20,
+                  child: TweenM(
+                      type: 'translatex',
+                      begin: 0.0,
+                      end: logo ? 0.0 : 30.0,
+                      durationinmilli: 400,
+                      child: TweenM(
+                        type: 'scalex',
+                        begin: 0.0,
+                        end: logo ? 0.0 : 0.6,
+                        durationinmilli: 400,
+                        child: TweenM(
+                            type: 'rotate',
+                            begin: 0.0,
+                            end: logo ? 0.0 : -90.0,
+                            durationinmilli: 400,
+                            child: mainitem()),
+                      ))),
+              Positioned(
+                  top: 25,
+                  left: 20,
+                  child: TweenM(
+                      type: 'translatex',
+                      begin: 0.0,
+                      end: logo ? 0.0 : 60.0,
+                      durationinmilli: 400,
+                      child: TweenM(
+                          type: 'rotate',
+                          begin: 0.0,
+                          end: logo ? 0.0 : 180.0,
+                          durationinmilli: 400,
+                          child: mainitem()))),
+              Positioned(
+                  top: 25,
+                  left: 20,
+                  child: TweenM(
+                      type: 'translatex',
+                      begin: 0.0,
+                      end: logo ? 0.0 : 85.0,
+                      durationinmilli: 400,
+                      child: TweenM(
+                          type: 'rotate',
+                          begin: 0.0,
+                          end: logo ? 0.0 : 360.0,
+                          durationinmilli: 400,
+                          child: mainitem()))),
+              Positioned(
+                  top: 25,
+                  left: 20,
+                  child: TweenM(
+                      type: 'translatex',
+                      begin: 0.0,
+                      end: logo ? 35.0 : 110.0,
+                      durationinmilli: 400,
+                      child: TweenM(
+                          type: 'rotate',
+                          begin: -90.0,
+                          end: logo ? -90.0 : 90.0,
+                          durationinmilli: 400,
+                          child: mainitem()))),
+              Positioned(
+                  top: 15,
+                  left: 20,
+                  child: TweenM(
+                      type: 'translatex',
+                      begin: 0.0,
+                      end: logo ? 60.0 : 110.0,
+                      durationinmilli: 400,
+                      child: TweenM(
                           type: 'opacity',
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                    bottomRight: Radius.elliptical(5, 3)),
-                                gradient: LinearGradient(colors: [
-                                  Colors.blueGrey.withOpacity(0.4),
-                                  Colors.transparent,
-                                  Colors.transparent,
-                                  Colors.deepPurpleAccent
-                                ]),
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: Colors.grey,
-                                      offset: Offset(6, 6),
-                                      blurRadius: 6.9)
-                                ]),
-                            width: 300,
-                            height: 40,
-                          )),
-                    ),
-                    Positioned(
-                      left: 10,
-                      bottom: 0,
+                          begin: 0.0,
+                          end: logo ? 1.0 : 0.0,
+                          durationinmilli: 400,
+                          child: Text(
+                            "معاذ الحوراني \n 1445-2024 \u00a9",
+                            style: GoogleFonts.marhey(color: Colors.white),
+                          )))),
+              Positioned(
+                  top: 25,
+                  left: 20,
+                  child: TweenM(
+                      type: 'translatex',
+                      begin: 0.0,
+                      end: logo ? 200.0 : 130.0,
+                      durationinmilli: 400,
                       child: TweenM(
-                        begin: 0.0,
-                        end: 1.0,
-                        durationinmilli: 600,
-                        type: 'scaley',
-                        child: TweenM(
-                            alignment: Alignment.bottomCenter,
-                            begin: 0.0,
-                            end: 1.0,
-                            durationinmilli: 600,
-                            type: 'opacity',
-                            child: Container(
-                              color: Colors.white,
-                              width: 8,
-                              height: 25,
-                            )),
-                      ),
-                    ),
-                    Positioned(
-                      left: 25,
-                      bottom: 5,
-                      child: TweenM(
-                        begin: 0.0,
-                        end: 1.0,
-                        durationinmilli: 700,
-                        type: 'scaley',
-                        child: TweenM(
-                            alignment: Alignment.bottomCenter,
-                            begin: 0.0,
-                            end: 1.0,
-                            durationinmilli: 700,
-                            type: 'opacity',
-                            child: Container(
-                              color: Colors.white,
-                              width: 8,
-                              height: 25,
-                            )),
-                      ),
-                    ),
-                    Positioned(
-                      left: 40,
-                      bottom: 10,
-                      child: TweenM(
-                        begin: 0.0,
-                        end: 1.0,
-                        durationinmilli: 800,
-                        type: 'scaley',
-                        child: TweenM(
-                            alignment: Alignment.bottomCenter,
-                            begin: 0.0,
-                            end: 1.0,
-                            durationinmilli: 800,
-                            type: 'opacity',
-                            child: Container(
-                              color: Colors.white,
-                              width: 8,
-                              height: 25,
-                            )),
-                      ),
-                    ),
-                    Positioned(
-                      left: 55,
-                      bottom: 2,
-                      child: TweenM(
-                        begin: 0.0,
-                        end: 1.0,
-                        durationinmilli: 900,
-                        type: 'scaley',
-                        child: TweenM(
-                            alignment: Alignment.bottomCenter,
-                            begin: 0.0,
-                            end: 1.0,
-                            durationinmilli: 900,
-                            type: 'opacity',
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(15)),
-                                  border: Border.all(
-                                      color: Colors.white, width: 4)),
-                              width: 30,
-                              height: 25,
-                            )),
-                      ),
-                    ),
-                    Positioned(
-                      left: 90,
-                      bottom: 0,
-                      child: TweenM(
-                        begin: 0.0,
-                        end: 1.0,
-                        durationinmilli: 1000,
-                        type: 'scaley',
-                        child: TweenM(
-                            alignment: Alignment.bottomCenter,
-                            begin: 0.0,
-                            end: 1.0,
-                            durationinmilli: 1000,
-                            type: 'opacity',
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: Colors.white, width: 4),
-                                      left: BorderSide(
-                                          color: Colors.white, width: 4),
-                                      right: BorderSide(
-                                          color: Colors.white, width: 4))),
-                              width: 20,
-                              height: 25,
-                            )),
-                      ),
-                    ),
-                    Positioned(
-                      left: 100,
-                      bottom: 10,
-                      child: TweenM(
-                        begin: 0.0,
-                        end: 1.0,
-                        durationinmilli: 1100,
-                        type: 'scaley',
-                        child: TweenM(
-                            alignment: Alignment.bottomCenter,
-                            begin: 0.0,
-                            end: 1.0,
-                            durationinmilli: 1100,
-                            type: 'opacity',
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
-                                  border: Border(
-                                      top: BorderSide(
-                                          color: Colors.white, width: 4),
-                                      left: BorderSide(
-                                          color: Colors.white, width: 4),
-                                      right: BorderSide(
-                                          color: Colors.white, width: 4))),
-                              width: 20,
-                              height: 25,
-                            )),
-                      ),
-                    ),
-                    Positioned(
-                      left: 140,
-                      bottom: 10,
-                      child: TweenM(
-                        begin: 0.0,
-                        end: 1.0,
-                        durationinmilli: 1200,
-                        type: 'scaley',
-                        child: TweenM(
-                            alignment: Alignment.bottomCenter,
-                            begin: 0.0,
-                            end: 1.0,
-                            durationinmilli: 1200,
-                            type: 'opacity',
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(2)),
-                                  border: Border(
-                                      top: BorderSide(
-                                          color: Colors.white, width: 4),
-                                      bottom: BorderSide(
-                                          color: Colors.white, width: 4),
-                                      right: BorderSide(
-                                          color: Colors.white, width: 4))),
-                              width: 40,
-                              height: 20,
-                            )),
-                      ),
-                    ),
-                    Positioned(
-                      left: 130,
-                      bottom: 0,
-                      child: TweenM(
-                        begin: 0.0,
-                        end: 1.0,
-                        durationinmilli: 1300,
-                        type: 'scaley',
-                        child: TweenM(
-                            alignment: Alignment.bottomCenter,
-                            begin: 0.0,
-                            end: 1.0,
-                            durationinmilli: 1300,
-                            type: 'opacity',
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  border: Border(
-                                      top: BorderSide(
-                                          color: Colors.white, width: 4),
-                                      bottom: BorderSide(
-                                          color: Colors.white, width: 4),
-                                      left: BorderSide(
-                                          color: Colors.white, width: 4))),
-                              width: 40,
-                              height: 20,
-                            )),
-                      ),
-                    ),
-                  ],
-                ),
+                        type: 'rotate',
+                        begin: 90.0,
+                        end: logo ? 90.0 : -90.0,
+                        durationinmilli: 400,
+                        child: mainitem(),
+                      ))),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Container mainitem() {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(topRight: Radius.circular(25)),
+          border: Border(
+            left: BorderSide(width: 3, color: Colors.white),
+            top: BorderSide(width: 3, color: Colors.white),
+            right: BorderSide(width: 3, color: Colors.white),
+          )),
+      height: 20,
+      width: 20,
     );
   }
 }

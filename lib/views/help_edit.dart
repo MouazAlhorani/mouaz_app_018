@@ -69,7 +69,7 @@ class HelpE extends ConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ...localdata
                               .where((element) => element['type'] == 'tf')
@@ -77,7 +77,14 @@ class HelpE extends ConsumerWidget {
                             return SizedBox(
                               width: 400,
                               child: TextFormField(
-                                textDirection: TextDirection.ltr,
+                                textDirection: e['controller']
+                                        .text
+                                        .toString()
+                                        .split('')
+                                        .any((element) =>
+                                            element.contains(RegExp(r'[A-Z]')))
+                                    ? TextDirection.ltr
+                                    : TextDirection.rtl,
                                 style: Theme.of(ctx).textTheme.bodyMedium,
                                 maxLines: e['maxlines'] ?? 1,
                                 validator: (value) {
@@ -90,7 +97,7 @@ class HelpE extends ConsumerWidget {
                                   }
                                   return null;
                                 },
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.start,
                                 controller: e['controller'],
                                 obscureText: e['obscuretext'] ?? false,
                                 keyboardType: e['keyboard'],

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mouaz_app_018/controllers/provider_mz.dart';
@@ -166,103 +167,21 @@ class HelpM extends ConsumerWidget {
   }
 
   datawidget({maincolumns, ref, refnotifier, required ctx}) {
-    return GridView(
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 300),
-        children: [
-          ...Help.localdata.where((element) => element['search']).map((e) =>
-              TweenM(
-                type: 'translatey',
-                begin: -100.0,
-                end: 0.0,
-                durationinmilli: Help.localdata.indexOf(e) * 50,
-                child: Card(
-                  child: Stack(children: [
-                    Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    TextButton(
-                                        onPressed: () {
-                                          ref
-                                              .read(notifierHelpdata.notifier)
-                                              .opencard(
-                                                  index: Help.localdata
-                                                      .indexOf(e));
-                                        },
-                                        child: Text("إغلاق")),
-                                         Hero(
-                                    tag: "${e['id']}",
-                                    child: const Icon(
-                                      Icons.help,
-                                      color: Colors.blueGrey,
-                                    )),
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.push(ctx,
-                                              MaterialPageRoute(builder: (_) {
-                                            HelpE.localdata[0]['controller']
-                                                .text = e['helpname'] ?? '';
-                                            HelpE.localdata[1]['controller']
-                                                .text = e['helpdesc'] ?? '';
-                                            return HelpE(mainE: e);
-                                          }));
-                                        },
-                                        child: Text("تعديل")),
-                                  ],
-                                ),
-                        FutureBuilder(
-                            future: Future(() async =>
-                                await StlFunction.proccesscontentwithurl(
-                                    content: e['helpdesc'])),
-                            builder: (_, snap) {
-                              if (snap.hasData) {
-                                List u = snap.data;
-                                return Expanded(
-                                  child: Center(
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Directionality(
-                                              textDirection: TextDirection.rtl,
-                                              child:
-                                                  SelectableText.rich(TextSpan(
-                                                children: [
-                                                  ...u.map((i) => i['v']
-                                                      ? TextSpan(
-                                                          style: Theme.of(ctx)
-                                                              .textTheme
-                                                              .bodyMedium!
-                                                              .copyWith(
-                                                                  decoration: TextDecoration
-                                                                      .underline),
-                                                          text: i['t'],
-                                                          recognizer: TapGestureRecognizer()
-                                                            ..onTap = () async =>
-                                                                await launchUrl(
-                                                                    Uri.parse(i[
-                                                                        't'])))
-                                                      : TextSpan(text: i['t']))
-                                                ],
-                                              )),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                return const SizedBox();
-                              }
-                            }),
-                      ],
-                    ),
-                    GestureDetector(
+    return Padding(
+      padding: const EdgeInsets.only(right: 75),
+      child: GridView(
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 150),
+          children: [
+            ...Help.localdata.where((element) => element['search']).map((e) =>
+                TweenM(
+                  type: 'translatey',
+                  begin: -100.0,
+                  end: 0.0,
+                  durationinmilli: Help.localdata.indexOf(e) * 50,
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
                       onLongPress: () {
                         ref
                             .read(refnotifier.notifier)
@@ -273,48 +192,86 @@ class HelpM extends ConsumerWidget {
                             ? ref
                                 .read(refnotifier.notifier)
                                 .chooseitem(index: Help.localdata.indexOf(e))
-                            : ref
-                                .read(notifierHelpdata.notifier)
-                                .opencard(index: Help.localdata.indexOf(e));
+                            : showDialog(
+                                context: ctx,
+                                builder: (_) {
+                                  return AlertDialog(
+                                    scrollable: true,
+                                    title: Text(e['helpname']),
+                                    content: helpdesccontent(e: e, ctx: ctx),
+                                    actions: [
+                                      IconButton(
+                                          onPressed: () {
+                                            Navigator.push(ctx,
+                                                MaterialPageRoute(builder: (_) {
+                                              HelpE.localdata[0]['controller']
+                                                  .text = e['helpname'] ?? '';
+                                              HelpE.localdata[1]['controller']
+                                                  .text = e['helpdesc'] ?? '';
+                                              return HelpE(mainE: e);
+                                            }));
+                                          },
+                                          icon: Icon(Icons.edit))
+                                    ],
+                                  );
+                                });
                       },
-                      child: TweenM(
-                        type: 'rotationZ',
-                        begin: 0.0,
-                        end: e['opencard'] ? 1.5 : 0.0,
-                        durationinmilli: 300,
-                        child: TweenM(
-                          type: 'opacity',
-                          begin: 0.0,
-                          end: e['opencard'] ? 0.0 : 1.0,
-                          durationinmilli: 300,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                gradient: LinearGradient(
-                                    begin: Alignment.topRight,
-                                    end: Alignment.bottomLeft,
-                                    colors: [
-                                      Colors.white,
-                                      e['choose']
-                                          ? Colors.blueAccent
-                                          : Colors.white,
-                                    ])),
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 3, bottom: 3),
-                                child: Center(
-                                  child: Text(
-                                    e['helpname'],
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )),
-                          ),
-                        ),
-                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.only(top: 3, bottom: 3),
+                          child: Card(
+                            elevation: 6,
+                            shadowColor:
+                                e['choose'] ? Colors.red : Colors.blue.shade100,
+                            child: Center(
+                              child: Text(
+                                e['helpname'],
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          )),
                     ),
-                  ]),
-                ),
-              ))
-        ]);
+                  ),
+                ))
+          ]),
+    );
+  }
+
+  helpdesccontent({e, ctx}) {
+    return FutureBuilder(
+        future: Future(() async =>
+            await StlFunction.proccesscontentwithurl(content: e['helpdesc'])),
+        builder: (_, snap) {
+          if (snap.hasData) {
+            List u = snap.data;
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SelectableText.rich(
+                  textDirection: e['helpdesc']
+                          .toString()
+                          .split('')
+                          .any((element) => element.contains(RegExp(r'[A-Z]')))
+                      ? TextDirection.ltr
+                      : TextDirection.rtl,
+                  TextSpan(
+                    children: [
+                      ...u.map((i) => i['v']
+                          ? TextSpan(
+                              style: Theme.of(ctx)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                      decoration: TextDecoration.underline),
+                              text: i['t'],
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async =>
+                                    await launchUrl(Uri.parse(i['t'])))
+                          : TextSpan(text: i['t']))
+                    ],
+                  )),
+            );
+          } else {
+            return const SizedBox();
+          }
+        });
   }
 }

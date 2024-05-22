@@ -23,6 +23,7 @@ class RemindsE extends StatelessWidget {
       'type': 'tf',
       'label': 'التفاصيل',
       'controller': TextEditingController(),
+      'maxlines': 5,
       'keyboard': TextInputType.multiline
     },
     {

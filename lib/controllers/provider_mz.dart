@@ -19,6 +19,7 @@ import 'package:mouaz_app_018/views/login.dart';
 import 'package:mouaz_app_018/views/logo.dart';
 import 'package:mouaz_app_018/views/reminds.dart';
 import 'package:mouaz_app_018/views/reminds_edit.dart';
+import 'package:mouaz_app_018/views/tables_edit.dart';
 
 class IconAnimatNotifier extends StateNotifier<bool> {
   IconAnimatNotifier({required this.custom}) : super(custom);
@@ -220,6 +221,82 @@ class RebuildListMapNotifier extends StateNotifier<List> {
       ];
     }
   }
+
+  column({op}) {
+    state = [
+      state[0],
+      op == 'add'
+          ? {
+              'cells': [
+                ...state[1]['cells'].map((a) => [
+                      ...a,
+                      {
+                        'id': 'a${a.length}-b${state[1]['cells'].indexOf(a)}',
+                        'controller': TextEditingController(
+                            text:
+                                'a${a.length}-b${state[1]['cells'].indexOf(a)}')
+                      }
+                    ])
+              ]
+            }
+          : state[1]['cells'][0].length == 1
+              ? {
+                  'cells': [
+                    ...state[1]['cells'].map((a) => [
+                          {
+                            'id': 'a0-b${state[1]['cells'].indexOf(a)}',
+                            'controller': TextEditingController(
+                                text: 'a0-b${state[1]['cells'].indexOf(a)}')
+                          }
+                        ])
+                  ]
+                }
+              : {
+                  'cells': [
+                    ...state[1]['cells']
+                        .map((a) => [...a.sublist(0, a.length - 1)])
+                  ]
+                }
+    ];
+  }
+
+  row({op}) {
+    state = [
+      state[0],
+      op == 'add'
+          ? {
+              'cells': [
+                ...state[1]['cells'],
+                [
+                  for (var i = 0; i < state[1]['cells'][0].length; i++)
+                    {
+                      'id': 'a$i-b${state[1]['cells'].length}',
+                      'controller': TextEditingController(
+                          text: 'a$i-b${state[1]['cells'].length}')
+                    }
+                ]
+              ]
+            }
+          : state[1]['cells'].length == 1
+              ? {
+                  'cells': [
+                    [
+                      for (var i = 0; i < state[1]['cells'][0].length; i++)
+                        {
+                          'id': 'a$i-b0',
+                          'controller': TextEditingController(text: 'a$i-b0')
+                        }
+                    ]
+                  ]
+                }
+              : {
+                  'cells': [
+                    ...state[1]['cells']
+                        .sublist(0, state[1]['cells'].length - 1)
+                  ]
+                }
+    ];
+  }
 }
 
 var notifierswaphiddenpassLogin =
@@ -253,6 +330,9 @@ var notifierDailyTasksReportsEdit =
 
 var notifierRemindsEdit = StateNotifierProvider<RebuildListMapNotifier, List>(
     (ref) => RebuildListMapNotifier(custom: RemindsE.localdata));
+
+var notifierTableEdit = StateNotifierProvider<RebuildListMapNotifier, List>(
+    (ref) => RebuildListMapNotifier(custom: TablesE.localdata));
 
 var notifierRemindgroupsEdit =
     StateNotifierProvider<RebuildListMapNotifier, List>(
@@ -406,14 +486,15 @@ class SetDate extends StateNotifier<DateTime> {
   setdate({ctx}) async {
     DateTime? selecteddate = await showDatePicker(
         context: ctx,
+        initialDate: custom,
         firstDate: DateTime.parse('2024-01-01'),
         lastDate: DateTime.parse('2025-01-01'));
     if (selecteddate != null) {
       state = selecteddate;
       return selecteddate;
     } else {
-      state = DateTime.now();
-      return DateTime.now();
+      state = custom;
+      return state;
     }
   }
 

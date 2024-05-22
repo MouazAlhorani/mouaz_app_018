@@ -22,53 +22,56 @@ class NavBarMrightside extends ConsumerWidget {
         right: 0,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              GestureDetector(
-                onTap: () => function(),
-                child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    onHover: (t) =>
-                        ref.read(notifierrightbuttonNav.notifier).onhover(),
-                    onExit: (t) =>
-                        ref.read(notifierrightbuttonNav.notifier).onexit(),
-                    child: Row(
-                      children: [
-                        Card(
-                          color: itemanimation
-                              ? Colors.white
-                              : Colors.deepPurpleAccent,
-                          child: TweenM(
-                              type: 'rotate',
-                              begin: 0.0,
-                              durationinmilli: 300,
-                              end: itemanimation ? 360.0 : 0.0,
-                              child: CircleAvatar(child: Icon(icon))),
-                        ),
-                        Visibility(
-                          visible: itemanimation,
-                          child: TweenM(
-                              type: 'scalex',
-                              begin: 0.0,
-                              end: itemanimation ? 1.0 : 0.0,
-                              durationinmilli: 300,
-                              child: Card(
-                                  color: Colors.deepPurpleAccent,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      label,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(color: Colors.white),
-                                    ),
-                                  ))),
-                        ),
-                      ],
-                    )),
-              ),
-            ],
+          child: Card(
+            color: Colors.grey,
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () => function(),
+                  child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      onHover: (t) =>
+                          ref.read(notifierrightbuttonNav.notifier).onhover(),
+                      onExit: (t) =>
+                          ref.read(notifierrightbuttonNav.notifier).onexit(),
+                      child: Row(
+                        children: [
+                          Card(
+                            color: itemanimation
+                                ? Colors.white
+                                : Colors.deepPurpleAccent,
+                            child: TweenM(
+                                type: 'rotate',
+                                begin: 0.0,
+                                durationinmilli: 300,
+                                end: itemanimation ? 360.0 : 0.0,
+                                child: CircleAvatar(child: Icon(icon))),
+                          ),
+                          Visibility(
+                            visible: itemanimation,
+                            child: TweenM(
+                                type: 'scalex',
+                                begin: 0.0,
+                                end: itemanimation ? 1.0 : 0.0,
+                                durationinmilli: 300,
+                                child: Card(
+                                    color: Colors.deepPurpleAccent,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        label,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(color: Colors.white),
+                                      ),
+                                    ))),
+                          ),
+                        ],
+                      )),
+                ),
+              ],
+            ),
           ),
         ));
   }
@@ -87,8 +90,8 @@ class NavBarMleftside extends ConsumerWidget {
     return Visibility(
       visible: settingsitem.where((element) => element['visible']).isNotEmpty,
       child: Positioned(
-          bottom: 0,
-          left: 0,
+          bottom: 50,
+          right: 0,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -103,48 +106,51 @@ class NavBarMleftside extends ConsumerWidget {
                       //     ref.read(notifierleftbuttonNav.notifier).onhover(),
                       onExit: (t) =>
                           ref.read(notifierleftbuttonNav.notifier).onexit(),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Visibility(
-                            visible: itemanimation,
-                            child: TweenM(
-                                type: 'translatey',
-                                begin: 200.0,
-                                end: itemanimation ? 0.0 : -200.0,
-                                durationinmilli: 300,
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ...settingsitem
-                                          .where(
-                                              (element) => element['visible'])
-                                          .map((e) => Card(
-                                                child: TextButton.icon(
-                                                    onPressed: e['action'],
-                                                    icon: Icon(e['icon']),
-                                                    label: Text(
-                                                      e['label'],
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyMedium,
-                                                    )),
-                                              ))
-                                    ])),
-                          ),
-                          Card(
-                            color: itemanimation
-                                ? Colors.white
-                                : Colors.deepPurpleAccent,
-                            child: TweenM(
-                                type: 'rotate',
-                                begin: 0.0,
-                                durationinmilli: 300,
-                                end: itemanimation ? 360.0 : 0.0,
-                                child: CircleAvatar(child: Icon(icon))),
-                          ),
-                        ],
+                      child: Card(
+                        color: Colors.grey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Visibility(
+                              visible: itemanimation,
+                              child: TweenM(
+                                  type: 'translatey',
+                                  begin: 200.0,
+                                  end: itemanimation ? 0.0 : -200.0,
+                                  durationinmilli: 300,
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ...settingsitem
+                                            .where(
+                                                (element) => element['visible'])
+                                            .map((e) => Card(
+                                                  child: TextButton.icon(
+                                                      onPressed: e['action'],
+                                                      icon: Icon(e['icon']),
+                                                      label: Text(
+                                                        e['label'],
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyMedium,
+                                                      )),
+                                                ))
+                                      ])),
+                            ),
+                            Card(
+                              color: itemanimation
+                                  ? Colors.white
+                                  : Colors.deepPurpleAccent,
+                              child: TweenM(
+                                  type: 'rotate',
+                                  begin: 0.0,
+                                  durationinmilli: 300,
+                                  end: itemanimation ? 360.0 : 0.0,
+                                  child: CircleAvatar(child: Icon(icon))),
+                            ),
+                          ],
+                        ),
                       )),
                 ),
               ],

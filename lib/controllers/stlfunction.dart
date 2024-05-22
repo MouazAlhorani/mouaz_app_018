@@ -632,6 +632,7 @@ class StlFunction {
           ref.read(i['notifier'].notifier).rebuild(i['model'], ctx);
         }
         Navigator.pop(ctx);
+        Navigator.pop(ctx);
       }
     }
   }
@@ -702,11 +703,10 @@ class StlFunction {
       {ctx, required WidgetRef ref, e, required List<Map> notifierlist}) async {
     String report = '';
     for (var i in DailyTasksReportsE.localdata) {
-      report += "- ";
-      report += i['check'] ? "_تم_" : "_لا_";
+      report += i['check'] ? "<DONE>" : "<NO>";
       report += '${i['task']}\n';
       i['controller'].text.isNotEmpty
-          ? report += '_comment_${i['controller'].text}\n'
+          ? report += '${i['controller'].text}\n'
           : null;
     }
     DailyTasksReportsE.maincomment.text.isNotEmpty
@@ -736,7 +736,9 @@ class StlFunction {
 
   static telegram(ctx) async {
     await requestPost(
-        ctx: ctx, url: "${BasicData.baseurl}${BasicData.telegram}", body: {});
+      ctx: ctx,
+      url: "${BasicData.baseurl}${BasicData.telegram}",
+    );
   }
 
   static createEditremind(
@@ -768,6 +770,7 @@ class StlFunction {
         for (var i in notifierlist) {
           ref.read(i['notifier'].notifier).rebuild(i['model'], ctx);
         }
+        Navigator.pop(ctx);
         Navigator.pop(ctx);
       }
     }
@@ -870,28 +873,36 @@ class StlFunction {
             if (snap.hasData) {
               helpname = snap.data[0]['helpname'];
 
+              List u = helpdesc;
               return AlertDialog(
-                  title: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: Text(helpname),
-                  ),
-                  content: Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: SelectableText.rich(TextSpan(children: [
-                      ...helpdesc.map((i) => i['v']
-                          ? TextSpan(
-                              style: Theme.of(ctx)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(
-                                      decoration: TextDecoration.underline),
-                              text: i['t'],
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () async =>
-                                    await launchUrl(Uri.parse(i['t'])))
-                          : TextSpan(text: i['t']))
-                    ])),
-                  ));
+                content: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SelectableText.rich(
+                      textDirection: snap.data[0]['helpdesc']
+                              .toString()
+                              .split('')
+                              .any((element) =>
+                                  element.contains(RegExp(r'[A-Z]')))
+                          ? TextDirection.ltr
+                          : TextDirection.rtl,
+                      TextSpan(
+                        children: [
+                          ...u.map((i) => i['v']
+                              ? TextSpan(
+                                  style: Theme.of(ctx)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                          decoration: TextDecoration.underline),
+                                  text: i['t'],
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async =>
+                                        await launchUrl(Uri.parse(i['t'])))
+                              : TextSpan(text: i['t']))
+                        ],
+                      )),
+                ),
+              );
             } else {
               return const SizedBox();
             }

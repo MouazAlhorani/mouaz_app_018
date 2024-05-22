@@ -16,10 +16,11 @@ import 'package:mouaz_app_018/tamplates/navbarM.dart';
 import 'package:mouaz_app_018/tamplates/onchoosebard.dart';
 import 'package:mouaz_app_018/tamplates/searchM.dart';
 import 'package:mouaz_app_018/views/reminds_edit.dart';
+import 'package:mouaz_app_018/views/tables_edit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Reminds extends StatelessWidget {
-  const Reminds({super.key});
+class Tables extends StatelessWidget {
+  const Tables({super.key});
   static List localdata = [];
   static List<Map> notifierlist = [
     {'notifier': notifierGroupsdata, 'model': 'groups'},
@@ -66,26 +67,26 @@ class RemindM extends ConsumerWidget {
         'sortby': 'expiredate',
       },
     ];
-    Reminds.localdata = basedata;
-    Reminds.localdata = ref.watch(notifierRemindsdata);
+    Tables.localdata = basedata;
+    Tables.localdata = ref.watch(notifierRemindsdata);
 
     return Directionality(
         textDirection: TextDirection.rtl,
         child: SafeArea(
             child: Scaffold(
           appBar: AppBar(
-            title: const Text("التذكير"),
+            title: const Text("جداول"),
             actions: [
               IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.arrow_forward))
             ],
             leading: const Hero(
-                tag: 'reminds_herotag',
+                tag: 'tables_herotag',
                 child: Icon(Icons.watch_later_outlined, size: 40)),
           ),
           body: Stack(children: [
-            Reminds.localdata.isEmpty
+            Tables.localdata.isEmpty
                 ? const Center(
                     child: Text("لا يوجد بيانات لعرضها"),
                   )
@@ -106,9 +107,9 @@ class RemindM extends ConsumerWidget {
                           height: 10,
                         ),
                         OnChooseBar(
-                          localdata: Reminds.localdata,
+                          localdata: Tables.localdata,
                           ref: ref,
-                          notifierlist: Reminds.notifierlist,
+                          notifierlist: Tables.notifierlist,
                           searchcontroller: searchcontroller,
                           name: 'remindname',
                           model: 'reminds',
@@ -120,31 +121,20 @@ class RemindM extends ConsumerWidget {
                                 ref: ref,
                                 refnotifier: notifierRemindsdata)),
                       ]),
-            // Positioned(
-            //     right: 0,
-            //     bottom: 125,
-            //     child: IconButton(
-            //         onPressed: () async => await StlFunction.telegram(context),
-            //         icon: Icon(
-            //           Icons.telegram,
-            //           size: 50,
-            //         ))),
             NavBarMrightside(
               icon: Icons.add,
-              label: "إضافة تذكير جديد",
+              label: "إضافة جدول جديد",
               function: () =>
                   Navigator.push(context, MaterialPageRoute(builder: (_) {
-                for (var i in RemindsE.localdata
-                    .where((element) => element['type'] == 'tf')) {
-                  i['controller'].text = '';
-                  i['hint'] = '';
-                }
-                RemindsE.localdata[4]['value'] = true;
-                RemindsE.localdata[5]['expiredate'] = DateTime.now();
-                RemindsE.localdata[7]['value'] = true;
-                return const RemindsE(
-                  remindgroups: [],
-                );
+                // for (var i in RemindsE.localdata
+                //     .where((element) => element['type'] == 'tf')) {
+                //   i['controller'].text = '';
+                //   i['hint'] = '';
+                // }
+                // RemindsE.localdata[4]['value'] = true;
+                // RemindsE.localdata[5]['expiredate'] = DateTime.now();
+                // RemindsE.localdata[7]['value'] = true;
+                return const TablesE();
               })),
             ),
             NavBarMleftside(
@@ -156,7 +146,7 @@ class RemindM extends ConsumerWidget {
                   'icon': Icons.upload,
                   'action': () async {
                     List data = [
-                      ...Reminds.localdata.map((e) => {
+                      ...Tables.localdata.map((e) => {
                             ...e,
                             'groups':
                                 StlFunction.getidfromasstr(source: e['groups'])
@@ -203,7 +193,7 @@ class RemindM extends ConsumerWidget {
                         erroremptyrole: 'بعض الحقول لايمكن ان تكون فارغة',
                         createbulkfunction: (data) async {
                           return await StlFunction.createbulkreminds(
-                              notifierlist: Reminds.notifierlist,
+                              notifierlist: Tables.notifierlist,
                               ctx: context,
                               data: data.toString(),
                               ref: ref);
@@ -223,75 +213,69 @@ class RemindM extends ConsumerWidget {
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 175),
           children: [
-            ...Reminds.localdata.where((element) => element['search']).map((e) {
+            ...Tables.localdata.where((element) => element['search']).map((e) {
               List groups =
                   StlFunction.convertfromstrtolist(source: e['groups']);
               return TweenM(
                 type: 'translatey',
                 begin: -100.0,
                 end: 0.0,
-                durationinmilli: Reminds.localdata.indexOf(e) * 50,
+                durationinmilli: Tables.localdata.indexOf(e) * 50,
                 child: MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     onLongPress: () {
                       ref
                           .read(refnotifier.notifier)
-                          .chooseitem(index: Reminds.localdata.indexOf(e));
+                          .chooseitem(index: Tables.localdata.indexOf(e));
                     },
                     onTap: () {
-                      Reminds.localdata.any((element) => element['choose'])
+                      Tables.localdata.any((element) => element['choose'])
                           ? ref
                               .read(refnotifier.notifier)
-                              .chooseitem(index: Reminds.localdata.indexOf(e))
+                              .chooseitem(index: Tables.localdata.indexOf(e))
                           : showDialog(
                               context: ctx,
                               builder: (_) {
                                 return AlertDialog(
                                   scrollable: true,
                                   title: Text(e['remindname']),
-                                  content: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        reminddesccontent(e: e, ctx: ctx),
-                                        Text(e['expiredate'].toString()),
-                                        Text(e['remainingdays'].toString()),
-                                        Text(e['groups'].toString())
-                                      ]),
+                                  content: Column(children: [
+                                    reminddesccontent(e: e, ctx: ctx),
+                                    Text(e['groups'].toString())
+                                  ]),
                                   actions: [
                                     IconButton(
                                         onPressed: () {
                                           Navigator.push(ctx,
                                               MaterialPageRoute(builder: (_) {
-                                            RemindsE.localdata[0]['controller']
-                                                .text = e['remindname'] ?? '';
-                                            RemindsE.localdata[1]['controller']
-                                                .text = e['reminddesc'] ?? '';
-                                            RemindsE.localdata[2]['controller']
-                                                    .text =
-                                                e['remindbefor'].toString();
-                                            RemindsE.localdata[3]['controller']
-                                                .text = e['url'] ?? '';
-                                            RemindsE.localdata[4]['value'] =
-                                                e['remindtype'] == 'auto'
-                                                    ? true
-                                                    : false;
-                                            RemindsE.localdata[5]
-                                                    ['expiredate'] =
-                                                e['expiredate'] != null
-                                                    ? DateTime.parse(
-                                                        e['expiredate'])
-                                                    : DateTime.now();
-                                            RemindsE.localdata[7]['value'] =
-                                                e['notification'];
+                                            // RemindsE.localdata[0]['controller']
+                                            //     .text = e['remindname'] ?? '';
+                                            // RemindsE.localdata[1]['controller']
+                                            //     .text = e['reminddesc'] ?? '';
+                                            // RemindsE.localdata[2]['controller']
+                                            //         .text =
+                                            //     e['remindbefor'].toString();
+                                            // RemindsE.localdata[3]['controller']
+                                            //     .text = e['url'] ?? '';
+                                            // RemindsE.localdata[4]['value'] =
+                                            //     e['remindtype'] == 'auto'
+                                            //         ? true
+                                            //         : false;
+                                            // RemindsE.localdata[5]
+                                            //         ['expiredate'] =
+                                            //     e['expiredate'] != null
+                                            //         ? DateTime.parse(
+                                            //             e['expiredate'])
+                                            //         : DateTime.now();
+                                            // RemindsE.localdata[7]['value'] =
+                                            //     e['notification'];
 
-                                            List groups = StlFunction
-                                                .convertfromstrtolist(
-                                                    source: e['groups']);
+                                            // List groups = StlFunction
+                                            //     .convertfromstrtolist(
+                                            //         source: e['groups']);
 
-                                            return RemindsE(
-                                                mainE: e, remindgroups: groups);
+                                            return TablesE(mainE: e);
                                           }));
                                         },
                                         icon: Icon(Icons.edit))

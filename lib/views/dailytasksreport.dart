@@ -110,19 +110,10 @@ class DailyTasksReportsM extends ConsumerWidget {
                         ),
                         Expanded(
                             child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                          child: SingleChildScrollView(
-                                              child: datacolumns(
-                                                  ctx: context,
-                                                  ref: ref,
-                                                  refnotifier:
-                                                      notifierDailyTasksReportdata)))
-                                    ])))
+                                child: datacolumns(
+                                    ctx: context,
+                                    ref: ref,
+                                    refnotifier: notifierDailyTasksReportdata)))
                       ]),
             NavBarMrightside(
               icon: Icons.add,
@@ -193,7 +184,7 @@ class DailyTasksReportsM extends ConsumerWidget {
                   }
                 }
               ],
-            )
+            ),
           ]),
         )),
       ),
@@ -202,7 +193,7 @@ class DailyTasksReportsM extends ConsumerWidget {
 
   datacolumns({required WidgetRef ref, refnotifier, required ctx}) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(right: 75),
       child: Column(children: [
         ...DailyTasksReports.localdata
             .where((element) => element['search'])
@@ -218,12 +209,11 @@ class DailyTasksReportsM extends ConsumerWidget {
             child: MouseRegion(
               child: Container(
                 decoration: BoxDecoration(border: Border.all()),
-                width: 500,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ...report.split("\n").map((e) {
-                        if (e.contains('تم')) {
+                        if (e.contains('<DONE>')) {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -235,7 +225,7 @@ class DailyTasksReportsM extends ConsumerWidget {
                             ],
                           );
                         } else {
-                          return e.contains('لا')
+                          return e.contains('<NO>')
                               ? Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -243,7 +233,13 @@ class DailyTasksReportsM extends ConsumerWidget {
                                       Icons.close,
                                       color: Colors.redAccent,
                                     ),
-                                    Expanded(child: Text(e.substring(6)))
+                                    Expanded(
+                                        child: Text(e.substring(4),
+                                            style: Theme.of(ctx)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(
+                                                    color: Colors.black54)))
                                   ],
                                 )
                               : Row(
@@ -252,17 +248,17 @@ class DailyTasksReportsM extends ConsumerWidget {
                                       width: 50,
                                     ),
                                     Expanded(
-                                        child: Text(
-                                      e.replaceAll('_comment_', ''),
-                                      style: Theme.of(ctx)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              decorationStyle:
-                                                  TextDecorationStyle.dashed),
-                                    )),
+                                      child: Text(e,
+                                          style: Theme.of(ctx)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                backgroundColor:
+                                                    Colors.amber[100],
+                                                decoration:
+                                                    TextDecoration.underline,
+                                              )),
+                                    ),
                                   ],
                                 );
                         }
@@ -316,7 +312,7 @@ class DailyTasksReportsM extends ConsumerWidget {
               ),
             ),
           );
-        })
+        }),
       ]),
     );
   }
